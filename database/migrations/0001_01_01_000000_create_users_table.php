@@ -19,6 +19,7 @@ return new class extends Migration {
             $table->string('password');
             $table->decimal('balance', 8, 2);
             $table->enum('user_type', ['COMMON', 'MERCHANT']);
+            $table->string('document')->nullable();
             $table->rememberToken();
             $table->timestamps();
         });
