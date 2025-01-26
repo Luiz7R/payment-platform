@@ -10,12 +10,11 @@ return new class extends Migration {
      */
     public function up(): void
     {
-        Schema::create('transactions', function (Blueprint $table) {
+        Schema::create('notifications', function (Blueprint $table) {
             $table->id();
+            $table->string('email', 70);
+            $table->string('message', 200);
             $table->timestamps();
-            $table->decimal('amount', 8, 2);
-            $table->unsignedBigInteger('sender_id')->references('id')->on('users');
-            $table->unsignedBigInteger('receiver_id')->references('id')->on('users');
         });
     }
 
@@ -24,6 +23,6 @@ return new class extends Migration {
      */
     public function down(): void
     {
-        Schema::dropIfExists('transactions');
+        Schema::dropIfExists('notifications');
     }
 };
