@@ -12,13 +12,20 @@ class User extends Authenticatable
     /** @use HasFactory<\Database\Factories\UserFactory> */
     use HasFactory, Notifiable;
 
+    public const COMMON = 'COMMON';
+    public const MERCHANT = 'MERCHANT';
+
     /**
      * The attributes that are mass assignable.
      *
      * @var list<string>
      */
     protected $fillable = [
-        'name',
+        'firstName',
+        'lastName',
+        'balance',
+        'user_type',
+        'document',
         'email',
         'password',
     ];
@@ -43,6 +50,12 @@ class User extends Authenticatable
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
+            'user_type' => 'string'
         ];
+    }
+
+    public function setBalance($balance)
+    {
+        $this->balance = $balance;
     }
 }
