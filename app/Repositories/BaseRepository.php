@@ -12,6 +12,11 @@ abstract class BaseRepository
         return app($this->modelClass)->newQuery();
     }
 
+    protected function model()
+    {
+        return app($this->modelClass);
+    }
+
     protected function doQuery($query = null, $take = 15, $paginate = true)
     {
         if (is_null($query)) {
@@ -51,5 +56,11 @@ abstract class BaseRepository
     public function findByAttribute(string $attribute, $value)
     {
         return $this->newQuery()->where($attribute, $value)->get();
+    }
+
+    public function create($payload)
+    {
+        dd($payload);
+        return $this->modelClass->save($payload);
     }
 }
