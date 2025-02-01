@@ -15,4 +15,6 @@ Route::get('/users/list', [UserController::class, 'findAll']);
 Route::get('/user/{id}', [UserController::class, 'findById']);
 
 // Transactions
-Route::post('/transactions/createTransaction', [TransactionsController::class, 'createTransaction']);
+Route::post('/transactions/createTransaction',
+[TransactionsController::class, 'createTransaction'])
+->name('createTransaction');
