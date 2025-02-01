@@ -56,15 +56,17 @@ cp .env.example .env
 ./vendor/bin/sail up -d
 ```
 
+### Rodar Migrations & Seeds:
+
+```bash
+docker exec -it payment_platform php artisan migrate &&
+docker exec -it payment_platform php artisan db:seed
+```
+
 #### Baixe o arquivo de coleção JSON
  [API Collection - Insomnia](./Payment_Platform_Collection_2025-02-01.json)
 
     obs: use os ids do usuário para testar a aplicação
-
-### Rodar o UserSeeder
-```bash
-docker exec -it payment_platform php artisan db:seed
-```
 
 ### Inicie o Processamento de filas dentro do container do Docker
 
