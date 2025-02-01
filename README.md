@@ -7,60 +7,84 @@
 <a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
 </p>
 
-## About Laravel
+<br>
+<br>
+<br>
+<h1 align="center">Payment Platform</h1>
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+### Plataforma de Pagamentos com Laravel e RabbitMQ
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+✅ Transferências entre usuários com validação de saldo e autorização externa.
+<br>
+✅ Processamento de pagamentos revertidos em caso de inconsistência.
+<br>
+✅ Notificações de transação assíncrono utilizando filas do RabbitMQ.
+<br>
+✅ Arquitetura baseada em services para modularidade e fácil manutenção.
+<br>
+✅ Feature Tests for Transactions.
+<br>
+✅ Regras de negócio seguras para evitar inconsistências financeiras.
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+Tecnologias Utilizadas
+<br>
+✅  Laravel – Framework PHP para desenvolvimento da API.
+<br>
+✅  RabbitMQ – Mensageria para processamento de transações de forma assíncrona.
+<br>
+✅  MySQL – Banco de dados relacional para armazenar transações e usuários.
+<br>
+✅  Docker – Containerização para padronizar ambiente de desenvolvimento e produção.
 
-## Learning Laravel
+## Setup do Projeto
+### Clone o repositório:
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+```bash
+git clone https://github.com/luiz7R/payment-platform.git
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+cd payment-platform
+```
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+### Configure o ambiente:
+```bash
+cp .env.example .env
+```
 
-## Laravel Sponsors
+### Inicie o Projeto:
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+```bash
+./vendor/bin/sail up -d
+```
 
-### Premium Partners
+#### Baixe o arquivo de coleção JSON
+ [API Collection - Insomnia](./Payment_Platform_Collection_2025-02-01.json)
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[WebReinvent](https://webreinvent.com/)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Jump24](https://jump24.co.uk)**
-- **[Redberry](https://redberry.international/laravel/)**
-- **[Active Logic](https://activelogic.com)**
-- **[byte5](https://byte5.de)**
-- **[OP.GG](https://op.gg)**
+    obs: use os ids do usuário para testar a aplicação
 
-## Contributing
+### Rodar o UserSeeder
+```bash
+docker exec -it payment_platform php artisan db:seed
+```
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+### Inicie o Processamento de filas dentro do container do Docker
 
-## Code of Conduct
+```bash
+docker exec -it payment_platform php artisan queue:work
+```
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
 
-## Security Vulnerabilities
+## Regras de Negócio:
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+Usuários podem enviar dinheiro (efetuar transferência) para lojistas e entre usuários.
+usuários do tipo "COMMON"
 
-## License
+Lojistas só recebem transferências, não enviam dinheiro para ninguém.
+usuários do tipo "MERCHANT"
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+Antes de finalizar a transferência, consulta-se um serviço autorizador externo.
+
+A operação de transferência deve ser uma transação (ou seja, revertida em qualquer caso de inconsistência) e o dinheiro deve voltar para a carteira do usuário que envia.
+
+No recebimento de pagamento, o usuário e o lojista receber notificação enviada por um serviço de terceiro e eventualmente este serviço pode estar indisponível/instável.
+
+
