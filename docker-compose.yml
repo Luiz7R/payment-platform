@@ -54,7 +54,7 @@ services:
     redis:
         image: 'redis:alpine'
         ports:
-            - '${FORWARD_REDIS_PORT:-6379}:6379'
+            - '${FORWARD_REDIS_PORT:-6380}:6380'
         volumes:
             - 'sail-redis:/data'
         networks:
@@ -88,8 +88,8 @@ services:
     mailpit:
         image: 'axllent/mailpit:latest'
         ports:
-            - '${FORWARD_MAILPIT_PORT:-1025}:1025'
-            - '${FORWARD_MAILPIT_DASHBOARD_PORT:-8025}:8025'
+            - '${FORWARD_MAILPIT_PORT:-1026}:1026'
+            - '${FORWARD_MAILPIT_DASHBOARD_PORT:-8026}:8026'
         networks:
             - sail
     selenium:
@@ -100,6 +100,17 @@ services:
             - '/dev/shm:/dev/shm'
         networks:
             - sail
+
+    rabbitMQ:
+        image: rabbitmq:3-management
+        container_name: rabbitmqPaymentP
+        ports:
+            - "5673:5672"
+            - "15673:15672"
+        networks:
+            - sail
+
+
 networks:
     sail:
         driver: bridge
