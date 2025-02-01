@@ -26,17 +26,18 @@ class UserServices
         return $this->userRepository->findAll();
     }
 
-    public function validateTransaction(User $sender, float $amount)
+    public function userCanTransfer(User $sender)
     {
-        if ($sender['user_type'] != User::COMMON) {
-            throw new InvalidTransactionException('Usuário do Tipo Lojista não pode realizar transação');
-        }
-
-        if ($sender['balance'] < $amount) {
-            throw new InvalidTransactionException('Saldo insuficiente',400);
+        if ($sender['user_type'] == User::MERCHANT) {
+            return false;
         }
 
         return true;
+    }
+
+    public function hasBalance(User $sender, $amount)
+    {
+        return $sender['balance'] >= $amount;
     }
 
     public function findUserById($id)
