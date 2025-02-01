@@ -12,6 +12,7 @@ Route::get('/user', function (Request $request) {
 // Users
 Route::post('/users/register', [UserController::class, 'register']);
 Route::get('/users/list', [UserController::class, 'findAll']);
+Route::get('/user/{id}', [UserController::class, 'findById']);
 
 // Transactions
 Route::post('/transactions/createTransaction', [TransactionsController::class, 'createTransaction']);
