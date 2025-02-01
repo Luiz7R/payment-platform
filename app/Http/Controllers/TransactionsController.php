@@ -5,9 +5,18 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreTransactionsRequest;
 use App\Http\Requests\UpdateTransactionsRequest;
 use App\Models\Transactions;
+use App\Services\TransactionService;
 
 class TransactionsController extends Controller
 {
+
+    private TransactionService $transactionService;
+
+    public function __construct(TransactionService $transactionService)
+    {
+        $this->transactionService = $transactionService;
+    }
+
     /**
      * Display a listing of the resource.
      */
@@ -27,9 +36,10 @@ class TransactionsController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreTransactionsRequest $request)
+    public function createTransaction(StoreTransactionsRequest $request)
     {
-        //
+        $validatedTransaction = $request->validated();
+        return $this->transactionService->createTransaction($validatedTransaction);
     }
 
     /**

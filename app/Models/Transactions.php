@@ -11,6 +11,12 @@ class Transactions extends Model
     /** @use HasFactory<\Database\Factories\TransactionsFactory> */
     use HasFactory;
 
+    protected $fillable = [
+        'amount',
+        'sender_id',
+        'receiver_id'
+    ];
+
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
