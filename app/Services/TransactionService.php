@@ -63,7 +63,10 @@ class TransactionService
                 $payload['amount']
             );
 
-            return $newTransaction;
+            return response()->json([
+                'transaction' => $newTransaction,
+                'message' => 'Transaction completed successfully'
+            ],200);
         });
     }
 

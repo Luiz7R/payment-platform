@@ -2,7 +2,6 @@
 
 namespace App\Services;
 
-use App\Exceptions\InvalidTransactionException;
 use App\Models\User;
 use App\Repositories\UserRepository;
 

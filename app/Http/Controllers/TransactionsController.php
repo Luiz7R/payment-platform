@@ -38,8 +38,7 @@ class TransactionsController extends Controller
      */
     public function createTransaction(StoreTransactionsRequest $request)
     {
-        $validatedTransaction = $request->validated();
-        return $this->transactionService->createTransaction($validatedTransaction);
+        return $this->transactionService->createTransaction($request->validated());
     }
 
     /**

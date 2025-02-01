@@ -30,12 +30,20 @@ class StoreTransactionsRequest extends FormRequest
         ];
     }
 
+    public function messages()
+    {
+        return [
+            "receiver_id" => "The Retailer provided does not exist",
+            "sender_id" => "The Costumer provided does not exist"
+        ];
+    }
+
     public function failedValidation(Validator $validator)
     {
         throw new HttpResponseException(response()->json([
             'success'   => false,
             'message'   => 'Validation errors',
             'data'      => $validator->errors()
-        ]));
+        ],422));
     }
 }
